@@ -16,7 +16,7 @@ fn main() {
         .insert_resource(WindowDescriptor {
             width: 800.,
             height: 600.,
-            title: "VTT Mapper".to_string(), // ToDo
+            title: "KennyJam".to_string(), // ToDo
             ..Default::default()
         })
         .add_plugins(DefaultPlugins)

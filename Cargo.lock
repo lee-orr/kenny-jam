@@ -1980,6 +1980,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "kenny_jam"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "bevy_webgl2",
+ "embed-resource",
+ "game_plugin",
+ "winit",
+]
+
+[[package]]
 name = "kernel32-sys"
 version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3342,17 +3353,6 @@ checksum = "fc2f5402d3d0e79a069714f7b48e3ecc60be7775a2c049cb839457457a239532"
 dependencies = [
  "cc",
  "libc",
-]
-
-[[package]]
-name = "vtt_mapper"
-version = "0.1.0"
-dependencies = [
- "bevy",
- "bevy_webgl2",
- "embed-resource",
- "game_plugin",
- "winit",
 ]
 
 [[package]]

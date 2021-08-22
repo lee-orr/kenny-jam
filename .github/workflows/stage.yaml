@@ -6,8 +6,8 @@ on:
 
 # ToDo: adapt names
 env:
-  GAME_EXECUTABLE_NAME: vtt_mapper
-  GAME_OSX_APP_NAME: VTTMAPPER
+  GAME_EXECUTABLE_NAME: kenny_jam
+  GAME_OSX_APP_NAME: KennyJam
 
 jobs:
   build-macOS:
@@ -140,4 +140,4 @@ jobs:
           space_name: ${{ secrets.SPACE_NAME }}
           space_region: ${{ secrets.SPACE_REGION }}
           source: build/web/
-          out_dir: staging
+          out_dir: staging/kenny
