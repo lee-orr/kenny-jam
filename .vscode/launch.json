@@ -18,13 +18,13 @@
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=bevy_game",
-                    "--package=bevy_game",
+                    "--bin=kenny_jam",
+                    "--package=kenny_jam",
                     "--features",
                     "dev"
                 ],
                 "filter": {
-                    "name": "bevy_game",
+                    "name": "kenny_jam",
                     "kind": "bin"
                 },
             },
@@ -47,13 +47,13 @@
                 "args": [
                     "test",
                     "--no-run",
-                    "--bin=bevy_game",
-                    "--package=bevy_game",
+                    "--bin=bevy_app",
+                    "--package=bevy_app",
                     "--features",
                     "dev"
                 ],
                 "filter": {
-                    "name": "bevy_game",
+                    "name": "bevy_app",
                     "kind": "bin"
                 }
             },

@@ -1,5 +1,6 @@
-use crate::actions::Actions;
+use crate::actions::{Actions, PlayerMovement};
 use crate::loading::TextureAssets;
+use crate::tiles::{Tile, TilePosition};
 use crate::GameState;
 use bevy::prelude::*;
 
@@ -31,28 +32,71 @@ fn spawn_player(
 ) {
     commands
         .spawn_bundle(SpriteBundle {
-            material: materials.add(textures.texture_bevy.clone().into()),
+            material: materials.add(textures.robot_cheer.clone().into()),
             transform: Transform::from_translation(Vec3::new(0., 0., 1.)),
+            sprite: Sprite {
+                size: Vec2::new(48., 64.),
+                resize_mode: SpriteResizeMode::Manual,
+                ..Default::default()
+            },
             ..Default::default()
         })
-        .insert(Player);
+        .insert(Player)
+        .insert(TilePosition { x: 0, y: 0 });
 }
 
 fn move_player(
-    time: Res<Time>,
     actions: Res<Actions>,
-    mut player_query: Query<&mut Transform, With<Player>>,
+    mut query: (
+        Query<&mut TilePosition, With<Player>>,
+        Query<(&Tile, &TilePosition), Without<Player>>,
+    ),
 ) {
     if actions.player_movement.is_none() {
         return;
     }
-    let speed = 150.;
-    let movement = Vec3::new(
-        actions.player_movement.unwrap().x * speed * time.delta_seconds(),
-        actions.player_movement.unwrap().y * speed * time.delta_seconds(),
-        0.,
-    );
+
+    let direction = actions.player_movement.unwrap();
+
+    let movement = match direction {
+        PlayerMovement::Up => TilePosition { x: 0, y: 1 },
+        PlayerMovement::Down => TilePosition { x: 0, y: -1 },
+        PlayerMovement::Left => TilePosition { y: 0, x: -1 },
+        PlayerMovement::Right => TilePosition { y: 0, x: 1 },
+    };
+    let mut player_query = query.0;
+    let tile_query = query.1;
     for mut player_transform in player_query.iter_mut() {
-        player_transform.translation += movement;
+        let newPos = TilePosition {
+            x: player_transform.x + movement.x,
+            y: player_transform.y + movement.y,
+        };
+
+        bevy::log::info!(
+            "Player moving from {} {} to {} {}",
+            player_transform.x,
+            player_transform.y,
+            newPos.x,
+            newPos.y
+        );
+
+        let mut collision = false;
+
+        for (tile, position) in tile_query.iter() {
+            if position.x == newPos.x && position.y == newPos.y {
+                if tile.check_collision(direction) {
+                    collision = true;
+                }
+            } else if position.x == player_transform.x && position.y == player_transform.y {
+                if tile.cant_leave(direction) {
+                    collision = true;
+                }
+            }
+        }
+
+        if !collision {
+            player_transform.x = newPos.x;
+            player_transform.y = newPos.y;
+        }
     }
 }
